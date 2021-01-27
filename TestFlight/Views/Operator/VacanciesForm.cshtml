@@ -1,0 +1,39 @@
+﻿@using TestFlight.Models
+@model Vacancy
+@{
+    ViewBag.Title = "VacanciesForm";
+    Layout = "~/Views/Shared/_LayoutService.cshtml";
+}
+
+<div class="container">
+    <h4 style="padding-bottom:10px;">Добавление нового продукта</h4>
+    @using (Html.BeginForm("VacanciesForm", "Operator", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary();
+        <table class="table">
+            <tr class="form-group">
+                <td>@Html.LabelFor(v => v.Title)</td>
+                <td>@Html.TextBoxFor(v => v.Title, new { @class = "form-control" })</td>
+                <td style="color:#ff6a00">@Html.ValidationMessageFor(v => v.Title)</td>
+            </tr>
+            <tr class="form-group">
+                <td>@Html.LabelFor(v => v.Shedule)</td>
+                <td>@Html.TextBoxFor(v => v.Shedule, new { @class = "form-control" })</td>
+                <td style="color:#ff6a00">@Html.ValidationMessageFor(v => v.Shedule)</td>
+            </tr>
+            <tr class="form-group">
+                <td>@Html.LabelFor(v => v.Requirements)</td>
+                <td>@Html.TextBoxFor(v => v.Requirements, new { @class = "form-control" })</td>
+                <td style="color:#ff6a00">@Html.ValidationMessageFor(v => v.Requirements)</td>
+            </tr>
+            <tr class="form-group">
+                <td>@Html.LabelFor(v => v.Salary)</td>
+                <td>@Html.TextBoxFor(v => v.Salary, new { @class = "form-control" })</td>
+                <td style="color:#ff6a00">@Html.ValidationMessageFor(v => v.Salary)</td>
+            </tr>
+        </table>
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(v => v.Id)
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    }
+</div>

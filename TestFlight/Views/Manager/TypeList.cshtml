@@ -1,0 +1,86 @@
+﻿@model TestFlight.Models.TypeConteiner
+@{
+    ViewBag.Title = "TypeList";
+    Layout = "~/Views/Shared/_LayoutService.cshtml";
+}
+    <div class="container-fluid" style="margin-right:5%; margin-left:5%">
+        <h4 style="padding-bottom:10px;"> Лист типов </h4>
+        <table class="table table-responsive-sm table-sm" id="Types">
+            <thead>
+                <tr>
+                    <th><h6>Main id</h6></th>
+                    <th><h6>Название российское</h6></th>
+                    <th><h6>Название английское</h6></th>
+                    <th><h6>Значек</h6></th>
+                    <th><h6>Sub Id</h6></th>
+                    <th><h6>Название подтипа</h6></th>
+                    <th><h6>Th Id</h6></th>
+                    <th><h6>Название третьего подтипа</h6></th>
+                    <th><h6>Удалить</h6></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var Main in Model.Main.ToList())
+                {
+                    <tr>
+                        <td>@Main.Id</td>
+                        <td>@Html.ActionLink(Main.RusName, "EditType", "Manager", new { id = Main.Id, sid = -1, tid = -1 }, null)</td>
+                        <td>@Main.EngName</td>
+                        <td>@Main.Icon</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><a class="btn btn-sm btn-outline-danger" href="@Url.Action("DeleteType", "Manager", new { id = Main.Id, sid = -1, tid = -1 }, null)" role="button">Удалить</a></td>
+                    </tr>
+                    foreach (var Sub in Model.SubList.ToList())
+                    {
+                        if (Sub.ProdTypeId == Main.Id)
+                        {
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>@Sub.Id</td>
+                                <td>@Html.ActionLink(Sub.SubTypeName, "EditType", "Manager", new { id = -1, sid = Sub.Id, tid = -1 }, null)</td>
+                                <td></td>
+                                <td></td>
+                                <td><a class="btn btn-sm btn-outline-danger" href="@Url.Action("DeleteType", "Manager", new { id = -1, sid = Sub.Id, tid = -1 }, null)" role="button">Удалить</a></td>
+                            </tr>
+                        }
+                        foreach (var Th in Model.ThList.ToList())
+                        {
+                            if ((Sub.ProdTypeId == Main.Id) && (Th.SubTypeId == Sub.Id))
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>@Th.Id</td>
+                                    <td>@Html.ActionLink(Th.SubTypeName, "EditType", "Manager", new { id = -1, sid = -1, tid = Th.Id }, null)</td>
+                                    <td><a class="btn btn-sm btn-outline-danger" href="@Url.Action("DeleteType", "Manager", new { id = -1, sid = -1, tid = Th.Id }, null)" role="button">Удалить</a></td>
+                                </tr>
+                            }
+                        }
+                    }
+
+                }
+            </tbody>
+        </table>
+        <a class="btn btn-primary" href="@Url.Action("Main","Manager", null)" role="button">Назад</a>
+        <a class="btn btn-outline-primary" href="@Url.Action("NewType","Manager", new { id = 0, sid = -1, tid = -1 }, null)" role="button">Новый тип</a>
+        <a class="btn btn-outline-primary" href="@Url.Action("NewType","Manager", new { id = -1, sid = 0, tid = -1 } , null)" role="button">Новый подтип</a>
+        <a class="btn btn-outline-primary" href="@Url.Action("NewType","Manager", new { id = -1, sid = -1, tid = 0 } , null)" role="button">Новый третий тип</a>
+    </div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+       
+        });
+    </script>
+}

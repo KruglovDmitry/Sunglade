@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <link rel="icon" href="~/Images/Logo/small_logo.png" type="image/x-icon"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Солнечная поляна</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+
+    <header>@{Html.RenderAction("HeaderPartial", "Home");}</header>
+
+    <aside>@{Html.RenderAction("SideNavPartial", "Home");}</aside>
+
+    <main class="sidebar-fixed-enabled" style="padding-top: 5rem; background-color:ghostwhite">
+        <section class="px-lg-3 pt-4">
+            <div class="px-3 pt-2">
+                @RenderBody()
+            </div>
+        </section>
+
+        <footer>
+            @{Html.RenderAction("FooterPartial", "Home");}
+        </footer>
+
+        <!--В начало-->
+
+        <a class="btn-scroll-top show" href="#top" data-scroll="">
+            <span class="btn-scroll-top-tooltip text-muted font-size-sm mr-2">Вверх</span>
+            <i class="btn-scroll-top-icon czi-arrow-up"></i>
+        </a>
+
+    </main>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/theme")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

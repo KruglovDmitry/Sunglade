@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="navbar-tool-text ml-n3">
+            <small>
+                @Html.ActionLink("Здравствуйте " + User.Identity.GetUserName().ToString().Split('@')[0], "CustomerPage", "Customer", routeValues: null, htmlAttributes: new { title = "Manage", style = "color:#7d879c;" })
+            </small>
+            <a href="javascript:document.getElementById('logoutForm').submit()" style = "color:#7d879c;">Выйти</a>
+        </div>
+    }
+}
+else
+{
+<div class="navbar-tool ml-1 ml-lg-0 mr-n1 mr-lg-2">
+        <div class="navbar-tool-icon-box">
+            <span class="navbar-tool-tooltip" style="line-height : 1rem;" >Вход</span>
+            <i class="navbar-tool-icon czi-user"></i>
+        </div>
+    <div class="navbar-tool-text ml-n3">
+            <small>
+            @Html.ActionLink("Регистрация", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", style = "color:#7d879c;" })
+            </small>
+            @Html.ActionLink("Вход", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", style = "color:#7d879c;" })
+    </div>
+</div>
+}

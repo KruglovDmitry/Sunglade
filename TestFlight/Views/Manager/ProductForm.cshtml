@@ -1,0 +1,123 @@
+﻿@using TestFlight.Models
+@model ProductUpload
+@{
+    ViewBag.Title = "NewProduct";
+    Layout = "~/Views/Shared/_LayoutService.cshtml";
+}
+
+    <div class="container">
+        <h4 style="padding-bottom:10px;">Добавление нового продукта</h4>
+        @using (Html.BeginForm("Save", "Manager", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.ValidationSummary();
+            <table class="table">
+                <tr class="form-group">
+                    <td>@Html.LabelFor(p => p.Product.Name)</td>
+                    <td>@Html.TextBoxFor(p => p.Product.Name, new { @class = "form-control" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(p => p.Product.Name)</td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(p => p.Product.Photo)</td>
+                    <td>@Html.TextBoxFor(p => p.Product.Photo, new { @disabled = "disabled", @class = "form-control" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(p => p.PhotoUpload)</td>
+                </tr>
+                <tr class="form-group">
+                    <td></td>
+                    <td>
+                        <input type="file" id="PhotoUpload" name="PhotoUpload" /><br>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr class="form-group">
+                    <td></td>
+                    <td>
+                        <input type="file" id="PhotoUpload" name="PhotoUpload" /><br>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr class="form-group">
+                    <td></td>
+                    <td>
+                        <input type="file" id="PhotoUpload" name="PhotoUpload" /><br>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr class="form-group">
+                    <td></td>
+                    <td>
+                        <input type="file" id="PhotoUpload" name="PhotoUpload" /><br>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr class="form-group">
+                    <td></td>
+                    <td>
+                        <input type="file" id="PhotoUpload" name="PhotoUpload" /><br>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(p => p.Product.ProdTypeId)</td>
+                    <td>@Html.TextBoxFor(p => p.Product.ProdTypeId, new { @class = "form-control" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(p => p.Product.ProdTypeId)</td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(p => p.Product.SubTypeId)</td>
+                    <td>@Html.TextBoxFor(p => p.Product.SubTypeId, new { @class = "form-control" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(p => p.Product.SubTypeId)</td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(p => p.Product.ThSubTypeId)</td>
+                    <td>@Html.TextBoxFor(p => p.Product.ThSubTypeId, new { @class = "form-control" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(p => p.Product.ThSubTypeId)</td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(p => p.Product.ProdTypeName)</td>
+                    <td>@Html.TextBoxFor(p => p.Product.ProdTypeName, new { @class = "form-control" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(p => p.Product.ProdTypeName)</td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(p => p.Product.Price)</td>
+                    <td>@Html.TextBoxFor(p => p.Product.Price, new { @class = "form-control" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(p => p.Product.Price)</td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(p => p.Product.PriceFor)</td>
+                    <td>@Html.TextBoxFor(p => p.Product.PriceFor, new { @class = "form-control" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(p => p.Product.PriceFor)</td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(p => p.Product.Description)</td>
+                    <td>@Html.TextBoxFor(p => p.Product.Description, new { @class = "form-control" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(p => p.Product.Description)</td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(p => p.Product.Finder)</td>
+                    <td>@Html.TextBoxFor(p => p.Product.Finder, new { @class = "form-control" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(p => p.Product.Finder)</td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(p => p.Product.OldPrice)</td>
+                    <td>@Html.TextBoxFor(p => p.Product.OldPrice, new { @class = "form-control" })</td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(p => p.Product.DiscountProd)</td>
+                    <td>@Html.CheckBoxFor(p => p.Product.DiscountProd, new { @class = "form-check" })</td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(p => p.Product.Avail)</td>
+                    <td>@Html.CheckBoxFor(p => p.Product.Avail, new { @class = "form-check" })</td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(p => p.Product.Popularity)</td>
+                    <td>@Html.DropDownListFor(p => p.Product.Popularity, new SelectList(new List<byte> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }), "", new { @class = "form-check" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(p => p.Product.Popularity)</td>
+                </tr>
+            </table>
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(p => p.Product.Id)
+            @Html.HiddenFor(p => p.Product.Photo)
+            @Html.HiddenFor(p => p.Product.CrDate)
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        }
+    </div>

@@ -1,0 +1,69 @@
+﻿@using TestFlight.Models
+@model IEnumerable<Product>
+
+@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/_LayoutService.cshtml";
+}
+    <div class="container-fluid" style="margin-right:5%; margin-left:5%">
+        <h4 style="padding-bottom:10px;"> Лист продуктов </h4>
+        <table class="table table-responsive-sm" id="Products">
+            <thead>
+                <tr>
+                    <th><h6>ID</h6></th>
+                    <th><h6>Название</h6></th>
+                    <th><h6>Первый тип</h6></th>
+                    <th><h6>Второй тип</h6></th>
+                    <th><h6>Третий тип</h6></th>
+                    <th><h6>Имя типа</h6></th>
+                    <th><h6>Цена</h6></th>
+                    <th><h6>Единица цены</h6></th>
+                    <th><h6>Старая цена</h6></th>
+                    <th><h6>Описание</h6></th>
+                    <th><h6>Поиск</h6></th>
+                    <th><h6>Фото</h6></th>
+                    <th><h6>Доступен</h6></th>
+                    <th><h6>Продукт со скидкой</h6></th>
+                    <th><h6>Популярность</h6></th>
+                    <th><h6>Дата создания</h6></th>
+                    <th><h6>Удалить</h6></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var Product in Model)
+                {
+
+                <tr>
+                    <td>@Product.Id.ToString()</td>
+                    <td>@Html.ActionLink(Product.Name, "EditProduct", "Manager", new { id = Product.Id }, null)</td>
+                    <td>@Product.ProdTypeId</td>
+                    <td>@Product.SubTypeId</td>
+                    <td>@Product.ThSubTypeId</td>
+                    <td>@Product.ProdTypeName</td>
+                    <td>@Product.Price</td>
+                    <td>@Product.PriceFor</td>
+                    <td>@Product.OldPrice</td>
+                    <td>@Product.Description</td>
+                    <td>@Product.Finder</td>
+                    <td>@Product.Photo</td>
+                    <td>@Product.Avail</td>
+                    <td>@Product.DiscountProd</td>
+                    <td>@Product.Popularity</td>
+                    <td>@Product.CrDate.Date.ToString("d")</td>
+                    <td><a class="btn btn-outline-danger" href="@Url.Action("Delete","Manager", new { id = Product.Id }, null)" role="button">Удалить</a></td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        <a class="btn btn-primary" href="@Url.Action("Main","Manager", null)" role="button">Назад</a>
+        <a class="btn btn-outline-primary" href="@Url.Action("NewProduct","Manager", null)" role="button">Новый продукт</a>
+    </div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#Products").DataTable();
+
+        });
+    </script>        
+    }

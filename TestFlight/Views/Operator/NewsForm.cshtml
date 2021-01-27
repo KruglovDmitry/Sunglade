@@ -1,0 +1,36 @@
+﻿@using TestFlight.Models
+@model NewsUpload
+@{
+    ViewBag.Title = "NewsForm";
+    Layout = "~/Views/Shared/_LayoutService.cshtml";
+}
+
+<div class="container">
+    <h4 style="padding-bottom:10px;">Добавление новости</h4>
+    @using (Html.BeginForm("NewsForm", "Operator", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary();
+        <table class="table">
+            <tr class="form-group">
+                <td>@Html.LabelFor(n => n.News.Header)</td>
+                <td>@Html.TextBoxFor(n => n.News.Header, new { @class = "form-control" })</td>
+                <td style="color:#ff6a00">@Html.ValidationMessageFor(n => n.News.Header)</td>
+            </tr>
+            <tr class="form-group">
+                <td>@Html.LabelFor(n => n.News.Body)</td>
+                <td>@Html.TextBoxFor(n => n.News.Body, new { @class = "form-control" })</td>
+                <td style="color:#ff6a00">@Html.ValidationMessageFor(n => n.News.Body)</td>
+            </tr>
+            <tr class="form-group">
+                <td></td>
+                <td>
+                    <input type="file" id="File" name="File" /><br>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(n => n.News.Id)
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    }
+</div>

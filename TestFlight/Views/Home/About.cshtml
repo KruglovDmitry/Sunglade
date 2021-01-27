@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "О нас";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Миссия -->
+
+    <div class="container py-3">
+        <div class="card">
+            <img src="~/Images/Logo/AllProducts.jpg" class="card-img-top" alt="Products">
+            <div class="card-body">
+                <h5 class="card-title">Наши цели</h5>
+                <p class="card-text font-size-sm text-muted">Добрый день, Уважаемый покупатель, наша компания стремится к тому чтобы каждый день на Вашем столе были свежие и натруальные продукты местного производства.</p>
+            </div>
+        </div>
+    </div>
+    
+
+        @section scripts
+    {
+<script>
+    $(document).ready(function () {
+
+    //ПЕРЕХОД К КАТАЛОГУ
+    
+    $("ul li a.widget-list-link").click(function () {
+      document.location.replace('/Home/Catalog?Filter=Type&id=' + $(this).attr("data-prodtype-id") + "&sid=" + $(this).attr("data-subtype-id") + "&tid=" + $(this).attr("data-thsubtype-id"));
+    });
+
+    $("#input_text").keydown(function (e) {
+        if (e.keyCode === 13) {
+            document.location.replace('/Home/Catalog?Filter=Text&name=' + $("#input_text").val() + "&nid=" + $("select#input_type option:selected").attr("prodtype-id"));
+        };
+    });
+
+    //РАБОТА С КОРЗИНОЙ
+
+    //Показ корзины
+
+    updateBasket();
+    updateHeader();
+
+    //Удаление из корзины
+
+    $(document).on('click', 'button.close', function () {
+        deleteFromBasket($(this).attr('id'));
+        updateHeader();
+    });
+
+    //Редактирование корзины
+
+    $(document).on('click', 'button.js-minus', function () {
+        editBasket($(this).attr('id'), "minus");
+        updateHeader();
+    });
+
+    $(document).on('click', 'button.js-plus', function () {
+        editBasket($(this).attr('id'), "plus");
+        updateHeader();
+    });
+
+    //Заказ
+
+    $(document).on('click', 'button.js-order', function () {
+        getNewBasketOnServer();
+    });
+
+    });
+</script>
+}

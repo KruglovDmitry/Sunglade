@@ -1,0 +1,58 @@
+﻿@model TestFlight.Models.Order
+@{
+    ViewBag.Title = "OrderDetails";
+    Layout = "~/Views/Shared/_LayoutService.cshtml";
+}
+    <div class="container">
+        <h4 style="padding-bottom:5px;">Детали заказа - @Model.Id</h4>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td><h6>Время заказа</h6></td>
+                    <td>@Model.OrderTime.ToString("t")</td>
+                </tr>
+                <tr>
+                    <td><h6>Доставка как можно скорее</h6></td>
+                    <td>@if (Model.DeliveryASAP == true) { <span style="text-emphasis-color:coral"> Да </span>} else { <span style="text-emphasis-color:black" > Нет </span> }</td>
+                </tr>
+                <tr>
+                    <td><h6>Доставка ко времени</h6></td>
+                    <td>@if (Model.DelivaryToTime != null) {<span> @Model.DelivaryToTime.ToString("t") </span>} </td>
+                </tr>
+                <tr>
+                    <td><h6>Улица</h6></td>
+                    <td>@Model.ActualStreet</td>
+                </tr>
+                <tr>
+                    <td><h6>Номер дома</h6></td>
+                    <td>@Model.ActualHomeNr</td>
+                </tr>
+                 <tr>
+                    <td><h6>Номер квартиры</h6></td>
+                    <td>@Model.ActualFlatNr</td>
+                </tr>
+                 <tr>
+                    <td><h6>Заказчик</h6></td>
+                    <td>@Model.ActualName  @Model.ActualSurName</td>
+                </tr>
+                <tr>
+                    <td><h6>Телефон</h6></td>
+                    <td>@Model.ActualPhone</td>
+                </tr>
+                <tr>
+                    <td><h6>Сумма заказа</h6></td>
+                    <td>@Model.Total Рублей</td>
+                </tr>
+                <tr>
+                    <td><h6>Оплата картой</h6></td>
+                    <td>@if (Model.PayByCard == true) { <span style="text-emphasis-color:coral"> Да </span>} else { <span style="text-emphasis-color:black" > Нет </span> }</td>
+                </tr>
+                  <tr>
+                    <td><h6>Детали заказа</h6></td>
+                    <td>@Model.OrderDetail</td>
+                </tr>
+            </tbody>
+        </table>
+        <a class="btn btn-outline-secondary" href="@Url.Action("OrderList","Operator", null, null)" role="button">Назад</a>
+
+    </div>

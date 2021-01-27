@@ -1,0 +1,45 @@
+﻿@using TestFlight.Models
+@model IEnumerable<News>
+@{
+    ViewBag.Title = "NewsList";
+    Layout = "~/Views/Shared/_LayoutService.cshtml";
+}
+
+    <div class="container-fluid" style="margin-right:5%; margin-left:5%">
+        <h4 style="padding-bottom:10px;"> Новости </h4>
+        <table class="table table-responsive-sm" id="News">
+            <thead>
+                <tr>
+                    <th><h6>ID</h6></th>
+                    <th><h6>Фото</h6></th>
+                    <th><h6>Заголовок</h6></th>
+                    <th><h6>Текст</h6></th>
+                    <th><h6>Дата</h6></th>
+                    <th><h6>Удалить</h6></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var News in Model)
+                {
+                    <tr>
+                        <td>@News.Id</td>
+                        <td><img src="~/Images/News/@News.Photo" width="60"></td>
+                        <td>@News.Header</td>
+                        <td>@News.Body</td>
+                        <td>@News.Date.ToString("t")</td>
+                        <td><a class="btn btn-outline-danger" href="@Url.Action("DeleteNews","Operator", new { id = News.Id }, null)" role="button">Удалить</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a class="btn btn-info" href="@Url.Action("Main","Operator", null)" role="button">Назад</a>
+        <a class="btn btn-outline-info" href="@Url.Action("AddNews","Operator", new { id = 0 }, null)" role="button">Добавить новость</a>
+    </div>
+
+@section scripts {
+    <script>
+    $(document).ready(function () {
+
+    });
+    </script>
+}   

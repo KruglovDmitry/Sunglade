@@ -1,0 +1,311 @@
+﻿@model TestFlight.Models.Order
+@{
+    ViewBag.Title = "Ваш заказ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<nav class="mb-4" aria-label="breadcrumb">
+    <ol class="breadcrumb flex-lg-nowrap">
+        <li class="breadcrumb-item"><a class="text-nowrap" href="/Home/Index"><i class="czi-home"></i>Домашняя страница</a></li>
+        <li class="breadcrumb-item text-nowrap active" aria-current="page">Ваш заказ</li>
+    </ol>
+</nav>
+@using (Html.BeginForm("PlaceOrder", "Customer", FormMethod.Post, new { @class = "formWithValidation" , enctype = "multipart/form-data" }))
+{
+ <div class="row no-gutters pb-5 mb-xl-3">
+
+ <!-- Данные заказа-->
+
+    <div class="col-xl-5 mb-3">
+        <h1 class="h2 mb-4">Заказ</h1>
+        <h2 class="h5 mb-4">Детали доставки</h2>
+        <div class="d-flex flex-wrap justify-content-between align-items-center rounded-lg border py-2 px-3 mb-4">
+            <div class="media media-ie-fix align-items-center mr-3 py-2">
+                <div class="media-body pl-3">
+                    <div class="font-size-ms text-muted">Ваш город:</div>
+                    <div class="font-size-md font-weight-medium text-heading"> Самара, Россия</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group"> 
+                    <label for="Actual_Name">Имя <span class="text-danger">*</span></label>
+                    <input name="ActualName" class="form-control" id="Actual_Name" value="@Model.ActualName">
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="Actual_SurName">Фамилия <span class="text-danger">*</span></label>
+                    <input name="ActualSurName" class="form-control" id="Actual_SurName" value="@Model.ActualSurName">
+                    <div class="invalid-tooltip">Введите фамилию пожалуйста</div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="Actual_Phone">Номер телефона <span class="text-danger">*</span></label>
+                    <input name="ActualPhone" class="form-control" id="Actual_Phone" value="@Model.ActualPhone">
+                    <div class="invalid-tooltip">Введите номер телефона пожалуйста</div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="Actual_Email">Email</label>
+                    <input name="ActualEmail" class="form-control" id="Actual_Email" value="@Model.ActualEmail">
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <label for="Actual_Street">Адрес <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <input name="ActualStreet" class="form-control" id="Actual_Street" placeholder="Улица" value="@Model.ActualStreet">
+                    <div class="invalid-tooltip">Введите адрес улицы пожалуйста</div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <input name="ActualHomeNr" class="form-control" id="Actual_HomeNr" placeholder="Дом" value="@Model.ActualHomeNr">
+                    <div class="invalid-tooltip">Введите номер дома пожалуйста</div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <input name="ActualFlatNr" class="form-control" id="Actual_FlatNr" placeholder="Квартира" value="@Model.ActualFlatNr">
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="OrderDetail">Детали заказа</label>
+                    <textarea name="OrderDetail" class="form-control" id="OrderDetail" placeholder="Пожалуйста введите здесь дополнительную информацию..." rows="6"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ <!-- Спефицикация заказа + оплата -->
+
+    <div class="col-xl-6 offset-xl-1 mb-3">
+        <div class="bg-light rounded-lg py-5 px-4 px-sm-5">
+            <h2 class="h5 pb-3">Проверьте Ваш заказ</h2>
+
+            @{var i = 0;}
+            @foreach (var BasketEl in Model.OrderContent.ToList())
+            {
+                <div class="form-group">
+                    <input type="hidden" name="OrderContent[@i].Id" value="@i" />
+                </div>
+                <div class="container" id="item_delete_@i">
+                    <div class="form-group">
+                        <input type="hidden" name="OrderContent[@i].ProductId" value="@BasketEl.ProductId" />
+                    </div>
+                    <input type="hidden" id="js-price_@i" value="@BasketEl.Price" />
+                    <div class="row border-bottom">
+                        <div class="col-sm-6">
+                            <li class="media align-items-center pb-2">
+                                <a class="d-block mr-2" href="/Home/Product/@BasketEl.ProductId">
+                                    <img width="64" alt="Product" src="/Images/Products/@BasketEl.ProductPhoto">
+                                </a>
+                                <div class="media-body">
+                                    <h6 class="widget-product-title">@BasketEl.ProductName</h6>
+                                    <div class="widget-product-meta">
+                                        <span class="text-accent mr-2">
+                                            ₽ @BasketEl.Price.ToString().Split(',')[0].@if (BasketEl.Price.ToString().Split(',').Count() > 1)
+                                            {<small>@BasketEl.Price.ToString().Split(',')[1]</small>}
+                                        else
+                                        {<small>00</small>}
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="input-group form-group">
+                                <input class="form-control" type="text" name="OrderContent[@i].Quant" id="Order_ContentQuantity_@i" value="@BasketEl.Quant" readonly>
+                                <div class="input-group-append" id="@i">
+                                    <button class="btn btn-white border js-minus btn-icon" type="button">-</button>
+                                    <button class="btn btn-white border js-plus btn-icon" type="button">+</button>
+                                    <button class="btn btn-white border js-delete btn-icon" type="button"><i class="czi-trash text-danger"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                i++;
+            }
+            <input type="hidden" id="js-amount" value="@i">
+            <input type="hidden" id="js-authent" value="@Model.IsAutontificated">
+
+            <!-- Сумма -->
+
+            <ul class="list-unstyled font-size-sm pt-4 pb-2 border-bottom">
+                <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Итог:</span><span class="text-right font-weight-medium" id="orderTotalSmall"></span></li>
+            </ul>
+            <h3 class="font-weight-normal text-center my-4 py-2" id="orderTotalBig"></h3>
+
+            <!-- Время доставки  -->
+
+            <div class="accordion box-shadow-sm mb-4" id="delivery_time">
+                <div class="card">
+                    <div class="card-header py-3 px-3">
+                        <div class="custom-control custom-radio form-group">
+                            <input name="DeliveryASAP" class="custom-control-input" type="radio" id="asap" value="true" checked>
+                            <label class="custom-control-label font-weight-medium text-dark" for="asap" data-toggle="collapse" data-target="#asap_cont">Доставить как можно быстрее<i class="czi-delivery text-muted font-size-base align-middle mt-n1 ml-2"></i></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header py-3 px-3">
+                        <div class="custom-control custom-radio form-group">
+                            <input name="DeliveryASAP" class="custom-control-input" type="radio" id="totime" value="false">
+                            <label class="custom-control-label font-weight-medium text-dark" for="totime" data-toggle="collapse" data-target="#totime_cont">Доставить к определенному времени<i class="czi-watch text-muted font-size-lg align-middle mt-n1 ml-2"></i></label>
+                        </div>
+                    </div>
+                    <div class="collapse" id="totime_cont" data-parent="#delivery_time">
+                        <div class="card-body pb-2">
+                            <div class="form-group">
+                                <label for="time-input">Доставка будет осуществлена ко времени</label>
+                                <input name="DelivaryToTime" class="form-control" type="time" id="time-input" value="12:00:00">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Способ оплаты  -->
+
+            <div class="custom-control custom-radio">
+                <input name="PayByCash" class="custom-control-input" type="radio" id="bycash" value="true" checked>
+                <label class="custom-control-label" for="bycash">Оплата наличными при получении заказа <i class="czi-wallet text-muted font-size-lg align-middle mt-n1 ml-2"></i></label>
+            </div>
+            <div class="custom-control custom-radio">
+                <input name="PayByCash" class="custom-control-input" type="radio" id="bycard" value="false">
+                <label class="custom-control-label" for="bycard">Оплата картой при получении заказа <i class="czi-card text-muted font-size-lg align-middle mt-n1 ml-2"></i></label>
+            </div>
+
+            <!-- Разместить заказ -->
+
+            <div class="pt-4">
+                <button class="btn btn-primary btn-block" id="js-submit" type="submit">Заказать</button>
+            </div>
+            @Html.HiddenFor(o => o.CustomerId)
+            @Html.HiddenFor(o => o.BasketId)
+            @Html.AntiForgeryToken()
+        </div>
+    </div>
+ </div>
+ }
+
+<!--Предупреждения валидации-->
+
+<div class="toast-container toast-bottom-center">
+    <div class="toast val-auth mb-3" id="cart-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-primary text-white">
+            <i class="czi-bell mr-2"></i>
+            <h6 class="font-size-sm text-white mb-0 mr-auto">Учетная запись!</h6>
+            <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="toast-body">Войдите в свою учетную запись или зарегестрируйтесь пожалуйста.</div>
+    </div>
+</div>
+
+<div class="toast-container toast-bottom-center">
+    <div class="toast val-summ mb-3" id="cart-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-primary text-white">
+            <i class="czi-bell mr-2"></i>
+            <h6 class="font-size-sm text-white mb-0 mr-auto">Сумма заказа!</h6>
+            <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="toast-body">Извините, но минимальная сумма заказа составляет 500 рублей.</div>
+    </div>
+</div>
+
+<div class="toast-container toast-bottom-center">
+    <div class="toast val-delTime mb-3" id="cart-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-primary text-white">
+            <i class="czi-bell mr-2"></i>
+            <h6 class="font-size-sm text-white mb-0 mr-auto">Время доставки!</h6>
+            <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="toast-body">Извините, но доставка возможна только с 10.30 по 22.00.</div>
+    </div>
+</div>
+
+@section scripts 
+{
+    <script>
+        
+        $(document).ready(function () {
+
+            //ПЕРЕХОД К КАТАЛОГУ
+
+            $("ul li a.widget-list-link").click(function () {
+                document.location.replace('/Home/Catalog?Filter=Type&id=' + $(this).attr("data-prodtype-id") + "&sid=" + $(this).attr("data-subtype-id") + "&tid=" + $(this).attr("data-thsubtype-id"));
+            });
+
+            $("#input_text").keydown(function (e) {
+                if (e.keyCode === 13) {
+                    document.location.replace('/Home/Catalog?Filter=Text&name=' + $("#input_text").val() + "&nid=" + $("select#input_type option:selected").attr("prodtype-id"));
+                };
+            });
+
+            //РАБОТА С КОРЗИНОЙ
+
+            $("#basket_content").dropdown('dispose');
+
+            //РАБОТА СО СТРАНИЦЕЙ
+
+            //Активация кнопки заказа
+
+            setInterval(submitButton, 60000);
+                        
+            const max_Quant = 20;
+            const min_Quant = 0;
+            const min_order = 500;
+            const del_Time = [10, 30, 22, 00];
+
+            //Обновление итога
+
+            updateOrder(max_Quant);
+
+            //Редктирование количества
+
+            $(document).on('click', 'button.js-plus', function () {
+                let id = $(this).parent()[0].getAttribute('id');
+                let value = document.getElementById('Order_ContentQuantity_' + id).getAttribute('value');
+                if (parseInt(value) < max_Quant)
+                    document.getElementById('Order_ContentQuantity_' + id).setAttribute('value', parseInt(value) + 1);
+                updateOrder(max_Quant)
+            });
+
+            $(document).on('click', 'button.js-minus', function () {
+                let id = $(this).parent()[0].getAttribute('id');
+                let value = document.getElementById('Order_ContentQuantity_' + id).getAttribute('value');
+                if (parseInt(value) > min_Quant)
+                    document.getElementById('Order_ContentQuantity_' + id).setAttribute('value', parseInt(value) - 1);
+                updateOrder(max_Quant)
+            });
+
+            //Удаление пункта
+
+            $(document).on('click', 'button.js-delete', function () {
+                let id = $(this).parent()[0].getAttribute('id');
+                document.getElementById('item_delete_' + id).innerHTML = '';
+                updateOrder(max_Quant)
+            });
+
+            //ВАЛИДАЦИЯ ЗАКАЗА
+
+            let form = document.querySelector('.formWithValidation');
+
+            form.addEventListener('submit', function (event) {
+                if (orderValidation(min_order, del_Time) === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    }
+            }, false);
+
+            
+
+        });
+    </script>
+}

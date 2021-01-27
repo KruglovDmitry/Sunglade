@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "Main";
+    Layout = "~/Views/Shared/_LayoutService.cshtml";
+}
+    <div class="container-fluid" style="margin-right:5%; margin-left:5%">
+        <h4 style="padding-bottom:10px;"> Главная оператор </h4>
+        <a class="btn btn-info" href="@Url.Action("OrderList","Operator", null)" role="button">Лист заказов</a>
+        <a class="btn btn-info" href="@Url.Action("NewsList","Operator", null)" role="button">Новости</a>
+        <a class="btn btn-info" href="@Url.Action("VacanciesList","Operator", null)" role="button">Вакансии</a>
+        <a class="btn btn-info" href="@Url.Action("ReviewList","Operator", null)" role="button">Отзывы</a>
+    </div>

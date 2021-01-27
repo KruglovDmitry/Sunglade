@@ -1,0 +1,47 @@
+﻿@using TestFlight.Models
+@model IEnumerable<Vacancy>
+@{
+    ViewBag.Title = "VacanciesList";
+    Layout = "~/Views/Shared/_LayoutService.cshtml";
+}
+    <div class="container-fluid" style="margin-right:5%; margin-left:5%">
+        <h4 style="padding-bottom:10px;"> Вакансии </h4>
+        <table class="table table-responsive-sm" id="Vacancy">
+            <thead>
+                <tr>
+                    <th><h6>ID</h6></th>
+                    <th><h6>Название</h6></th>
+                    <th><h6>График</h6></th>
+                    <th><h6>Требования</h6></th>
+                    <th><h6>Заработная плата</h6></th>
+                    <th><h6>Дата</h6></th>
+                    <th><h6>Удалить</h6></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var Vacancy in Model)
+                {
+                    <tr>
+                        <td>@Vacancy.Id</td>
+                        <td>@Vacancy.Title</td>
+                        <td>@Vacancy.Shedule</td>
+                        <td>@Vacancy.Requirements</td>
+                        <td>@Vacancy.Salary</td>
+                        <td>@Vacancy.Date.ToString("t")</td>
+                        <td><a class="btn btn-outline-danger" href="@Url.Action("DeleteVacancy","Operator", new { id = Vacancy.Id }, null)" role="button">Удалить</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a class="btn btn-info" href="@Url.Action("Main","Operator", null)" role="button">Назад</a>
+        <a class="btn btn-outline-info" href="@Url.Action("AddVacancy","Operator", new { id = 0 }, null)" role="button">Добавить вакансию</a>
+    </div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+
+
+        });
+    </script>
+}   

@@ -1,0 +1,78 @@
+﻿@model IEnumerable<TestFlight.Models.News>
+@{
+    ViewBag.Title = "Новости";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Новости -->
+
+    <div class="container py-3">
+        <h5>Новости</h5>
+        @if (Model.Count() > 0)
+        {
+            foreach (var news in Model.ToList())
+            {
+                <div class="media">
+                    <img src="~/Images/News/@news.Photo" class="align-self-start mr-3 rounded" width="64" alt="NewsPhoto">
+                    <div class="media-body">
+                        <h6 class="mb-1">@news.Header</h6>
+                        <span class="font-size-sm text-muted">@news.Body</span>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {<div><span class="text-muted"> Пока ничего нового) </span></div>}
+    </div>
+
+@section scripts
+    {
+<script>
+$(document).ready(function () {
+
+    //ПЕРЕХОД К КАТАЛОГУ
+
+    $("ul li a.widget-list-link").click(function () {
+        document.location.replace('/Home/Catalog?Filter=Type&id=' + $(this).attr("data-prodtype-id") + "&sid=" + $(this).attr("data-subtype-id") + "&tid=" + $(this).attr("data-thsubtype-id"));
+    });
+
+    $("#input_text").keydown(function (e) {
+        if (e.keyCode === 13) {
+            document.location.replace('/Home/Catalog?Filter=Text&name=' + $("#input_text").val() + "&nid=" + $("select#input_type option:selected").attr("prodtype-id"));
+        };
+    });
+
+    //РАБОТА С КОРЗИНОЙ
+
+    //Показ корзины
+
+    updateBasket();
+    updateHeader();
+
+    //Удаление из корзины
+
+    $(document).on('click', 'button.close', function () {
+        deleteFromBasket($(this).attr('id'));
+        updateHeader();
+    });
+
+    //Редактирование корзины
+
+    $(document).on('click', 'button.js-minus', function () {
+        editBasket($(this).attr('id'), "minus");
+        updateHeader();
+    });
+
+    $(document).on('click', 'button.js-plus', function () {
+        editBasket($(this).attr('id'), "plus");
+        updateHeader();
+    });
+
+    //Заказ
+
+    $(document).on('click', 'button.js-order', function () {
+        getNewBasketOnServer();
+    });
+});
+</script>
+}

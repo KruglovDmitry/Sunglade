@@ -1,0 +1,344 @@
+﻿@model TestFlight.Models.CustomerPageUpload
+@{
+    ViewBag.Title = "Заказчик";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <section class="col-lg-10">
+
+        <!-- Форма заказчика -->
+
+        @using (@Html.BeginForm("SaveCustomer", "Customer", FormMethod.Post, new { id = "customerForm", enctype = "multipart/form-data" }))
+        {
+            <div class="container">
+                <h3>Персональные данные</h3>
+                <div class="bg-secondary rounded-lg p-4 mb-4">
+                    <div class="media align-items-center">
+                        <img class="border" width="90" alt="Your photo" src="~/Images/Customers/@Model.Customer.Photo">
+                        <div class="media-body pl-3">
+                            <button class="btn btn-sm btn-outline-accent mb-2" type="button" data-toggle="collapse" data-target="#fileinputcollapse" aria-expanded="false" aria-controls="fileinputcollapse"><i class="czi-loading mr-2"></i>Сменить фото</button>
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="collapse multi-collapse " id="fileinputcollapse">
+                                        <div class="custom-file form-group">
+                                            <input type="file" class="custom-file-input" name="PhotoUpload" id="Photo_Upload" />
+                                            <label class="custom-file-label" for="customFile">Выбрать файл</label>
+                                        </div>
+                                        <div class="p mb-0 font-size-ms text-muted">Допускается формат JPG, GIF или PNG. 300 x 300.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="account-fn">Имя</label>
+                            <input class="form-control" id="Customer_Name" name="Customer.Name" type="text" value="@Model.Customer.Name">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="account-ln">Фамилия</label>
+                            <input class="form-control" id="Customer_SurName" name="Customer.SurName" type="text" value="@Model.Customer.SurName">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="account-email">Email</label>
+                            <input disabled="" class="form-control" id="Customer_Email" name="Customer.Email" type="email" value="@Model.Customer.Email">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="account-phone">Номер телефона</label>
+                            <input class="form-control" id="Customer_Phone" name="Customer.Phone" type="tel" value="@Model.Customer.Phone" placeholder="Укажите Ваш номер телефона в формате 89270011222">
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <label for="account-email">Адрес</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <input class="form-control" id="Customer_Street" name="Customer.Street" type="text" value="@Model.Customer.Street" placeholder="Улица">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input class="form-control" id="Customer_HomeNr" name="Customer.HomeNr" type="text" value="@Model.Customer.HomeNr" placeholder="Номер дома">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input class="form-control" id="Customer_FlatNr" name="Customer.FlatNr" type="text" value="@Model.Customer.FlatNr" placeholder="Номер квартиры">
+                        </div>
+                    </div>
+
+                    <!-- Смена пароля & Подтверждение номера -->
+
+                    <div class="col-sm-8">
+                        <button type="button" class="btn btn-sm btn-outline-accent" data-toggle="collapse" data-target="#collapsePassword" aria-expanded="false" aria-controls="collapsePassword">Смена пароля</button>
+
+                        <div class="collapse py-3" id="collapsePassword">
+                            <div class="card card-body">
+                                <div class="form-group">
+                                    <label for="old-pass">Введите старый пароль пароль</label>
+                                    <div class="password-toggle">
+                                        <input class="form-control" id="old-pass" type="password" name="OldPassword">
+                                        <label class="password-toggle-btn">
+                                            <input class="custom-control-input" type="checkbox"><i class="czi-eye password-toggle-indicator"></i><span class="sr-only">Показать пароль</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="account-pass">Новый пароль</label>
+                                    <div class="password-toggle">
+                                        <input class="form-control" id="account-pass" type="password">
+                                        <label class="password-toggle-btn">
+                                            <input class="custom-control-input" type="checkbox"><i class="czi-eye password-toggle-indicator"></i><span class="sr-only">Показать пароль</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="account-confirm-pass">Подтвердите пароль</label>
+                                    <div class="password-toggle">
+                                        <input class="form-control" id="account-confirm-pass" type="password" name="NewPassword">
+                                        <label class="password-toggle-btn">
+                                            <input class="custom-control-input" type="checkbox"><i class="czi-eye password-toggle-indicator"></i><span class="sr-only">Показать пароль</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(c => c.Customer.Id)
+                    @Html.HiddenFor(c => c.Customer.Photo)
+                    <div class="col-12 py-3">
+                        <hr class="mt-2 mb-3">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center">
+                            <button class="btn btn-sm btn-primary mt-3 mt-sm-0" type="submit">Обновить учетную запись</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!--Оставить отзыв-->
+
+        @using (@Html.BeginForm("SaveReview", "Customer", FormMethod.Post, new { id = "reviewForm", enctype = "multipart/form-data" }))
+        {
+            <div class="container">
+                <h3>Отзыв</h3>
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        <h6><label for="textarea-input">Ваш отзыв</label></h6>
+                        <textarea class="form-control" id="Review_Body" name="Review.Body" rows="5" placeholder="Напишите свой отзыв тут"></textarea>
+                    </div>
+                    <div class=" col-sm-6 form-group">
+                        <h6><label for="select-input">Оценка</label></h6>
+                        <select class="form-control custom-select" id="Review_Score" name="Review.Score">
+                            <option value="0">Выберете одну из опций...</option>
+                            <option value="1">Неудовлетворительно</option>
+                            <option value="2">Удовлетворительно</option>
+                            <option value="3">Нормально</option>
+                            <option value="4">Хорошо</option>
+                            <option value="5">Отлично</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <hr class="mt-2 mb-3">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center">
+                            <button class="btn btn-sm btn-primary mt-3 mt-sm-0" type="submit">Оставить отзыв</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @Html.AntiForgeryToken()
+        }
+
+        <!--Лист заказов-->
+
+        <div class="container py-3">
+            <h3>Ваши заказы</h3>
+            @if (Model.Orders.Count() > 0)
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Дата заказа</th>
+                                <th>Продуктов в корзине</th>
+                                <th>Сумма</th>
+                                <th>Доставлено по адресу</th>
+                                <th>Детали заказа</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model.Orders)
+                             {
+                                 <tr>
+                                    <th scope="row">@order.Id</th>
+                                    <td>@order.OrderTime.ToString("d")</td>
+                                    <td>@order.OrderContent.ToList().Count()</td>
+                                    <td>@order.Total</td>
+                                    <td>@order.ActualStreet @order.ActualHomeNr</td>
+                                    <td>@order.OrderDetail</td>
+                                 </tr>
+                             }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {<div><span class="text-muted"> Извините, но у Вас пока не было заказов </span></div>}
+        </div>
+
+        <!--Удаление учетной записи-->
+
+        @using (@Html.BeginForm("Delete", "Customer", FormMethod.Post, new { id = "deleteForm", enctype = "multipart/form-data" }))
+        {
+            <div class="container py-3">
+                <hr class="mt-2 mb-3">
+                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                    <button class="btn btn-sm btn-outline-danger mt-3 mt-sm-0" type="submit">Удалить аккаунт</button>
+                </div>
+            </div>
+            @Html.AntiForgeryToken()
+        }
+    </section>
+
+<!-- Изменения учетной записи сохранены -->
+
+<div class="toast-container toast-bottom-center">
+    <div class="toast customer_succ mb-3" data-delay="2000" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white">
+            <i class="czi-check-circle mr-2"></i>
+            <h6 class="font-size-sm text-white mb-0 mr-auto">Учетная запись!</h6>
+            <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="toast-body">Изменения в учетной записи успешно сохранены.</div>
+    </div>
+</div>
+
+<!-- Отзыв сохранен -->
+
+<div class="toast-container toast-bottom-center">
+    <div class="toast review_succ wl-add mb-3" data-delay="2000" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white">
+            <i class="czi-check-circle mr-2"></i>
+            <h6 class="font-size-sm text-white mb-0 mr-auto">Отзыв!</h6>
+            <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="toast-body">Ваш отзыв успешно добавлен, спасибо.</div>
+    </div>
+</div>
+
+<!-- Ошибка -->
+
+<div class="toast-container toast-bottom-center">
+    <div class="toast error wl-remowe mb-3" data-delay="2000" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-danger text-white">
+            <i class="czi-announcement mr-2"></i>
+            <h6 class="font-size-sm text-white mb-0 mr-auto">Ошибка!</h6>
+            <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="toast-body">Извините что-то пошло не так.</div>
+    </div>
+</div>
+
+@section scripts
+    {
+    <script>
+        $(document).ready(function () {
+
+            //ИНФО
+
+            let href = window.location.href;
+
+            if (href.includes('customer=True')) $('.customer_succ').toast('show');
+            if (href.includes('customer=False')) $('.error').toast('show');
+            if (href.includes('review=True')) $('.review_succ').toast('show');
+            if (href.includes('review=False')) $('.error').toast('show');
+            if (href.includes('delete=False')) $('.error').toast('show');
+
+            //ПЕРЕХОД К КАТАЛОГУ
+
+            $("ul li a.widget-list-link").click(function () {
+                document.location.replace('/Home/Catalog?Filter=Type&id=' + $(this).attr("data-prodtype-id") + "&sid=" + $(this).attr("data-subtype-id") + "&tid=" + $(this).attr("data-thsubtype-id"));
+            });
+
+            $("#input_text").keydown(function (e) {
+                if (e.keyCode === 13) {
+                    document.location.replace('/Home/Catalog?Filter=Text&name=' + $("#input_text").val() + "&nid=" + $("select#input_type option:selected").attr("prodtype-id"));
+                };
+            });
+
+            //РАБОТА С КОРЗИНОЙ
+
+            //Показ корзины
+
+            updateBasket();
+            updateHeader();
+
+            //Удаление из корзины
+
+            $(document).on('click', 'button.close', function () {
+                deleteFromBasket($(this).attr('id'));
+                updateHeader();
+            });
+
+            //Редактирование корзины
+
+            $(document).on('click', 'button.js-minus', function () {
+                editBasket($(this).attr('id'), "minus");
+                updateHeader();
+            });
+
+            $(document).on('click', 'button.js-plus', function () {
+                editBasket($(this).attr('id'), "plus");
+                updateHeader();
+            });
+
+            //Заказ
+
+            $(document).on('click', 'button.js-order', function () {
+                getNewBasketOnServer();
+            });
+
+            //ВАЛИДАЦИЯ
+
+            let form = document.querySelector('#customerForm');
+
+            form.addEventListener('submit', function (event) {
+                let password = $('#account-pass');
+                let newPasword = $('#account-confirm-pass');
+                if (password.val() != newPasword.val()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    password.attr('style', 'border:double; border-color:red');
+                    newPasword.attr('style', 'border:double; border-color:red');
+                    setTimeout(() => password.removeAttr('style'), 1500);
+                    setTimeout(() => newPasword.removeAttr('style'), 1500);
+                }
+
+            }, false);
+
+            //Подтверждение номера телефона
+
+            $(document).on('click', 'button.js-code-sent', function () {
+                if (sendCode(phoneValidation())) $('.code_succ').toast('show');
+                else $('.code_error').toast('show');
+            });
+
+            $(document).on('click', 'button.js-code-conf', function () {
+                if ($('#phone-confirm-code').val() != "") {
+                    if (phoneVerification($('#phone-confirm-code').val())) $('.verif_succ').toast('show');
+                    else $('.verif_error').toast('show');
+                }
+            });
+
+        });
+    </script>
+}

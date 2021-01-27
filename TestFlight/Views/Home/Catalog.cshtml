@@ -1,0 +1,264 @@
+﻿@model TestFlight.Models.CatalogConteiner
+@{
+    ViewBag.Title = "Каталог";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<nav class="mb-4" aria-label="breadcrumb">
+    <ol class="breadcrumb flex-lg-nowrap">
+        <li class="breadcrumb-item"><a class="text-nowrap" href="/Home/Index"><i class="czi-home"></i>Домашняя страница</a></li>
+        <li class="breadcrumb-item text-nowrap active" aria-current="page">Каталог продуктов</li>
+    </ol>
+</nav>
+<section class="d-md-flex justify-content-between align-items-center mb-4 pb-2">
+    <h1 class="h2 mb-3 mb-md-0 mr-3">Каталог</h1>
+    <div class="d-flex align-items-center">
+        <div class="d-none d-sm-block py-2 font-size-sm text-muted text-nowrap mr-2">Сортировать по:</div>
+        <ul class="nav nav-tabs font-size-sm mb-0">
+            <li class="nav-item"><a class="nav-link active" id="pop_filter" href="#">По пулярности</a></li>
+            <li class="nav-item"><a class="nav-link" id="cheap_filter" href="#">Дешевле</a></li>
+            <li class="nav-item"><a class="nav-link" id="exp_filter" href="#">Дороже</a></li>
+        </ul>
+    </div>
+</section>
+
+<div class="row cz-product-gallery no-gutters mx-n2" id="main_conteiner">
+
+    <!-- Результаты поиска + Каталог по критерию поиска -->
+
+</div>
+
+<section class="pb-5 mb-2 mb-xl-4" id="js-catalog">
+    @if (Model.Content.Count() > 0)
+    {
+        foreach (var Category in Model.Content.ToList())
+        {
+        <h2 class="h3 pb-2 mb-grid-gutter text-center">@Category.ProductTypeName</h2>
+            <div class="cz-carousel cz-controls-static cz-controls-outside cz-dots-enabled">
+                <div class="cz-carousel-inner" data-carousel-options="{&quot;items&quot;: 2, &quot;gutter&quot;: 16, &quot;controls&quot;: true, &quot;autoHeight&quot;: true, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1}, &quot;480&quot;:{&quot;items&quot;:2}, &quot;720&quot;:{&quot;items&quot;:3}, &quot;991&quot;:{&quot;items&quot;:2}, &quot;1140&quot;:{&quot;items&quot;:3}, &quot;1300&quot;:{&quot;items&quot;:4}, &quot;1500&quot;:{&quot;items&quot;:5}}}">
+                    @foreach (var Product in Category.Products.ToList())
+                    {
+                        <div>
+                            <div class="card product-card card-static pb-3">
+                                @if (Product.DiscountProd)
+                                {<span class="badge badge-danger badge-shadow">Sale</span>}
+                                else if (Product.Popularity > 6)
+                                {<span class="badge badge-danger badge-shadow">Sale</span>}
+                                else if (Product.CrDate - DateTime.Now < new TimeSpan(50))
+                                {<span class="badge badge-info badge-shadow">New</span>}
+                                <button class="btn-wishlist btn-sm" type="button" id="@Product.Id" data-toggle="tooltip" data-placement="left" title="В избранное"><i class="czi-heart"></i></button>
+                                <a class="card-img-top d-block overflow-hidden" href="/Home/Product/@Product.Id">
+                                    <img src="~/Images/Products/@Product.Photo.Split('#')[0]" alt="Product">
+                                </a>
+                                <div class="card-body py-2">
+                                    <a class="product-meta d-block font-size-xs" href="/Home/Catalog?Filter=Type&id=@Product.ProdTypeId.ToString()&sid=all&tid=all">@Product.ProdTypeName</a>
+                                    <h3 class="product-title font-size-base" style="margin-bottom:0.3rem"><a href="/Home/Product/@Product.Id">@Product.Name</a></h3>
+                                    <div class="product-price">
+                                        <span class="text-accent">₽ @Product.Price<small>.00</small></span>
+                                        <span class="text-body">/ @Product.PriceFor</span>
+                                    </div>
+                                </div>
+                                <div class="product-floating-btn">
+                                    <button class="btn js-put btn-primary btn-shadow btn-sm" id="@Product.Id" type="button">+<i class="czi-cart font-size-base ml-1"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+</section>
+
+<!-- Добавлено в корзину-->
+
+<div class="toast-container toast-bottom-center">
+    <div class="toast mb-3" id="cart-toast" data-delay="2000" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white">
+            <i class="czi-check-circle mr-2"></i>
+            <h6 class="font-size-sm text-white mb-0 mr-auto">Добавлено в Вашу корзину!</h6>
+            <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="toast-body">Данный продукт был добавлен в Вашу корзину.</div>
+    </div>
+</div>
+
+<!-- Добавлено в избранное-->
+
+<div class="toast-container toast-bottom-center">
+    <div class="toast wl-add mb-3" data-delay="2000" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-info text-white">
+            <i class="czi-bell mr-2"></i>
+            <h6 class="font-size-sm text-white mb-0 mr-auto">Избранное</h6>
+            <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="toast-body">Продукт добавлен в список избранного</div>
+    </div>
+</div>
+
+<!-- Удалено из избранного-->
+
+<div class="toast-container toast-bottom-center">
+    <div class="toast wl-remowe mb-3" data-delay="2000" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-dark text-white">
+            <i class="czi-close-circle mr-2"></i>
+            <h6 class="font-size-sm text-white mb-0 mr-auto">Избранное</h6>
+            <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="toast-body">Продукт удален из списка избранного</div>
+    </div>
+</div>
+
+
+@section scripts
+    {
+    <script>
+        $(document).ready(function () {
+
+            //ПАРАМЕТРЫ ПОИСКА
+
+            let i = 1;
+            let hrefContent = window.location.href.match(/(?==)(.*?)(?=&|$)/gm);
+            let Filter = ['pop', '', '', '', ''];
+
+            //ИЗНАЧАЛЬНОЕ ЗАПОЛНЕНИЕ ПО ПАРАМЕТРАМ ПОИСКА
+
+            if (hrefContent != null)
+                for (let el of hrefContent) {
+                    Filter[i] = decodeURI(el.substr(1, el.length));
+                    i++;
+                };
+
+            switch (Filter[1]) {
+                case 'Type': getFromType(Filter[2], Filter[3], Filter[4], Filter[0]); break;
+                case 'Text': getFromText(Filter[2], Filter[3], Filter[0]); break;
+                case 'WishList': getWishList(Filter[0]); break;
+                case 'Discounts': getDiscounts(Filter[0]); break;
+                case 'Bestsellers': getBestsellers(Filter[0]); break;
+            };
+
+            // ЗАПОЛНЕНИЕ КАТАЛОГА
+
+            $(document).on('click', 'ul li a.widget-list-link', function () {
+                document.getElementById('js-catalog').innerHTML = '';
+                Filter[1] = 'Type';
+                Filter[2] = $(this).attr("data-prodtype-id");
+                Filter[3] = $(this).attr("data-subtype-id");
+                Filter[4] = $(this).attr("data-thsubtype-id");
+                getFromType(Filter[2], Filter[3], Filter[4], Filter[0]);
+            });
+
+            $("#input_text").keydown(function (e) {
+                document.getElementById('js-catalog').innerHTML = '';
+                Filter[1] = 'Text';
+                Filter[2] = $("#input_text").val();
+                Filter[3] = $("select#input_type option:selected").attr("prodtype-id");
+                Filter[4] = '';
+                getFromText(Filter[2], Filter[3], Filter[0]);
+            });
+
+            //ФИЛЬТРАЦИЯ ПО КРИТЕРИЯМ
+
+            let filter = document.getElementById('pop_filter');
+
+            //Фильтр по популярности
+
+            $(document).on('click', '#pop_filter', function () {
+                filter.classList.remove('active');
+                filter = document.getElementById('pop_filter');
+                filter.classList.add('active');
+                Filter[0] = 'pop';
+                switch (Filter[1]) {
+                    case 'Text': getFromText(Filter[2], Filter[3], Filter[0]); break;
+                    case 'Type': getFromType(Filter[2], Filter[3], Filter[4], Filter[0]); break;
+                    case 'WishList': getWishList(Filter[0]); break;
+                    case 'Discounts': getDiscounts(Filter[0]); break;
+                    case 'Bestsellers': getBestsellers(Filter[0]); break;
+                };
+            });
+
+            //Фильтр дешевле
+
+            $(document).on('click', '#cheap_filter', function () {
+                filter.classList.remove('active');
+                filter = document.getElementById('cheap_filter');
+                filter.classList.add('active');
+                Filter[0] = 'cheap';
+                switch (Filter[1]) {
+                    case 'Text': getFromText(Filter[2], Filter[3], Filter[0]); break;
+                    case 'Type': getFromType(Filter[2], Filter[3], Filter[4], Filter[0]); break;
+                    case 'WishList': getWishList(Filter[0]); break;
+                    case 'Discounts': getDiscounts(Filter[0]); break;
+                    case 'Bestsellers': getBestsellers(Filter[0]); break;
+                };
+            });
+
+            //Фильтр дороже
+
+            $(document).on('click', '#exp_filter', function () {
+                filter.classList.remove('active');
+                filter = document.getElementById('exp_filter');
+                filter.classList.add('active');
+                Filter[0] = 'exp';
+                switch (Filter[1]) {
+                    case 'Text': getFromText(Filter[2], Filter[3], Filter[0]); break;
+                    case 'Type': getFromType(Filter[2], Filter[3], Filter[4], Filter[0]); break;
+                    case 'WishList': getWishList(Filter[0]); break;
+                    case 'Discounts': getDiscounts(Filter[0]); break;
+                    case 'Bestsellers': getBestsellers(Filter[0]); break;
+                };
+            });
+
+            //РАБОТА С КОРЗИНОЙ
+
+            //Показ корзины
+
+            updateBasket();
+            updateHeader();
+
+            //Добавление в корзину
+
+            $(document).on('click', 'button.js-put', function () {
+                $('#cart-toast').toast('show');
+                putIntoBasket($(this).attr("id"), 1);
+                updateBasket();
+                updateHeader();
+            });
+
+            //Удаление из корзины
+
+            $(document).on('click', 'button.close', function () {
+                deleteFromBasket($(this).attr('id'));
+                updateHeader();
+            });
+
+            //Редактирование корзины
+
+            $(document).on('click', 'button.js-minus', function () {
+                editBasket($(this).attr('id'), "minus");
+                updateHeader();
+            });
+
+            $(document).on('click', 'button.js-plus', function () {
+                editBasket($(this).attr('id'), "plus");
+                updateHeader();
+            });
+
+            //Заказ
+
+            $(document).on('click', 'button.js-order', function () {
+                getNewBasketOnServer();
+            });
+
+            //РАБОТА С ИЗБРАННЫМ
+
+            $(document).on('click', 'button.btn-wishlist', function () {
+                $('[data-toggle="tooltip"]').tooltip('dispose');
+                editWishList($(this).attr('id'));
+                colorWishlist();
+                if (Filter[1] == 'WishList') getWishList(Filter[0]);
+            });
+
+        });
+    </script>
+}

@@ -1,0 +1,83 @@
+﻿@using TestFlight.Models
+@model IEnumerable<Order>
+@{
+    ViewBag.Title = "OrderList";
+    Layout = "~/Views/Shared/_LayoutService.cshtml";
+}
+
+    <div class="container-fluid" style="margin-right:5%; margin-left:5%">
+        <h4 style="padding-bottom:10px;"> Лист заказов </h4>
+        <div class="btn-group" style="padding-bottom:15px;">
+            <a class="btn btn-outline-secondary" href="@Url.Action("OrderList","Operator", new { id = 0 }, null)" role="button">Заказы за сегодня</a>
+            <a class="btn btn-outline-secondary" href="@Url.Action("OrderList","Operator", new { id = 1 }, null)" role="button">Актуальные</a>
+            <a class="btn btn-outline-secondary" href="@Url.Action("OrderList","Operator", new { id = 2 }, null)" role="button">Заказы за прошлый день</a>
+            <a class="btn btn-outline-secondary" href="@Url.Action("OrderList","Operator", new { id = 3 }, null)" role="button">Все</a>
+        </div>
+        <table class="table table-responsive-sm" id="Products">
+            <thead>
+                <tr>
+                    <th><h6>Дата заказа</h6></th>
+                    <th><h6>Время заказа</h6></th>
+                    <th><h6>Доставка ASAP</h6></th>
+                    <th><h6>Доставка ко времени</h6></th>
+                    <th><h6>Номер заказа</h6></th>
+                    <th><h6>Улица</h6></th>
+                    <th><h6>Номер дома</h6></th>
+                    <th><h6>Имя заказчика</h6></th>
+                    <th><h6>Фамилия заказчика</h6></th>
+                    <th><h6>Телефон</h6></th>
+                    <th><h6>Корзина</h6></th>
+                    <th><h6>Итоговая сумма</h6></th>
+                    <th><h6>Передан в сборку</h6></th>
+                    <th><h6>Оплата картой</h6></th>
+                    <th><h6>Оплата наличными</h6></th>
+                    <th><h6>Детали заказа</h6></th>
+                    <th><h6>Передать в сборку</h6></th>
+                    <th><h6>Удалить</h6></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var Order in Model)
+                {
+                    <tr>
+                        <td>@Order.OrderTime.ToString("d")</td>
+                        <td>@Order.OrderTime.ToString("t")</td>
+                        @if (Order.DeliveryASAP) {<td> Да </td>} else {<td> </td>}
+                        @if (!Order.DeliveryASAP) {<td>@Order.DelivaryToTime.ToString("t")</td>} else {<td> </td>}
+                        <td>@Html.ActionLink(Order.Id.ToString(), "OrderDetails", "Operator", new { id = Order.Id }, null)</td>
+                        <td>@Order.ActualStreet</td>
+                        <td>@Order.ActualHomeNr</td>
+                        <td>@Order.ActualName</td>
+                        <td>@Order.ActualSurName</td>
+                        <td>@Order.ActualPhone</td>
+                        <td>@Html.ActionLink(Order.Id.ToString(), "ShowBasket", "Operator", new { id = Order.Id }, null)</td>
+                        <td>@Order.Total Руб</td>
+                        @if (Order.Done) {<td> Да </td>} else {<td> </td>}
+                        @if (Order.PayByCard) {<td> Да </td>} else {<td> </td>}
+                        @if (Order.PayByCash) {<td> Да </td>} else {<td> </td>}
+                        <td>@Order.OrderDetail</td>
+                        <td><a class="btn btn-outline-info" href="@Url.Action("Done","Operator", new { id = Order.Id }, null)" role="button">Передать</a></td>
+                        <td><a class="btn btn-outline-danger" href="@Url.Action("Delete","Operator", new { id = Order.Id }, null)" role="button">Удалить</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a class="btn btn-info" href="@Url.Action("Main","Operator", null)" role="button">Назад</a>
+    </div>
+
+    @section scripts {
+        <script>
+            $(document).ready(function () {
+
+            $("#Products").DataTable();
+
+                function Reload()
+                {
+                    document.location.reload(true)
+                }
+
+                setInterval(Reload, 50000);
+            
+        });
+        </script>
+    }   

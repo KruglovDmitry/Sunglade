@@ -1,0 +1,38 @@
+﻿@model IEnumerable<TestFlight.Models.BasketElement>
+@using TestFlight.Models
+@{
+    ViewBag.Title = "ShowBasket";
+    Layout = "~/Views/Shared/_LayoutService.cshtml";
+}
+
+    <div class="container">
+        <h4 style="padding-bottom:5px;">Корзина - </h4>
+        <table class="table table-responsive-lg">
+            <thead>
+                <tr>
+                    <th><h6>№</h6></th>
+                    <th><h6>ID продукта</h6></th>
+                    <th><h6>Название продукта</h6></th>
+                    <th><h6>Фото</h6></th>
+                    <th><h6>Цена</h6></th>
+                    <th><h6>Количество</h6></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ var i = 1; }
+                @foreach (var BasketElement in Model)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@BasketElement.ProductId</td>
+                        <td>@BasketElement.ProductName</td>
+                        <td><img width="100" class="rounded" src="~/Images/Products/@BasketElement.ProductPhoto"></td>
+                        <td>@BasketElement.Price</td>
+                        <td>@BasketElement.Quant</td>
+                    </tr>
+                    i++;
+                }
+            </tbody>
+        </table>
+        <a class="btn btn-outline-secondary" href="@Url.Action("OrderList","Operator", null, null)" role="button">Назад</a>
+    </div>

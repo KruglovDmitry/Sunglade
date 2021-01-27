@@ -1,0 +1,130 @@
+﻿@{
+    ViewBag.Title = "Контакты";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Контакты -->
+
+<div class="container py-3">
+    <h5>Контакты</h5>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-img-top overflow-hidden">
+                    <img src="~/Images/Logo/City_LogoBig.jpg" class="card-img-top" alt="Samara">
+                </div>
+                <div class="card-body">
+                    <h6>Россия, Самара</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li class="media pb-3 border-bottom">
+                            <i class="czi-location font-size-lg mt-2 mb-0 text-primary"></i>
+                            <div class="media-body pl-3">
+                                <span class="font-size-ms text-muted">Наш адрес</span>
+                                <a href="#" class="d-block text-heading font-size-sm">769, Industrial Dr, West Chicago, IL 60185, USA</a>
+                            </div>
+                        </li>
+                        <li class="media pt-2 pb-3 border-bottom">
+                            <i class="czi-phone font-size-lg mt-2 mb-0 text-primary"></i>
+                            <div class="media-body pl-3">
+                                <span class="font-size-ms text-muted">Номер телефона для связи</span>
+                                <a href="tel:+184725276533" class="d-block text-heading font-size-sm">+1 (847) 252 765 33</a>
+                            </div>
+                        </li>
+                        <li class="media pt-2m">
+                            <i class="czi-mail font-size-lg mt-2 mb-0 text-primary"></i>
+                            <div class="media-body pl-3">
+                                <span class="font-size-ms text-muted">Электронная почта</span>
+                                <a href="mailto:info@sunglade.ru" class="d-block text-heading font-size-sm">info@sunglade.ru</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <img class="d-inline-block rounded mb-3" width="96" src="~/Images/Logo/Dan.jpg" alt="Danil N" />
+                    <h6 class="pt-1 mb-1">Данил Надравецкий</h6>
+                    <p class="font-size-sm text-muted">Исполнительный директор</p>
+                    <ul class="font-size-sm list-unstyled mb-4">
+                        <li class="mb-0"><i class="czi-phone mr-2"></i><span class="nav-link-style">00 33 169 7720</span></li>
+                        <li class="mb-0"><i class="czi-mail mr-2"></i><span class="nav-link-style">dan.nadravetcky@sunglade.ru</span></li>
+                    </ul>
+                    <a class="social-btn sb-vk sb-outline sb-sm mr-2 mb-2" href="#"><i class="czi-vk"></i></a>
+                    <a class="social-btn sb-odnoklassniki sb-outline sb-sm mr-2 mb-2" href="#"><i class="czi-odnoklassniki"></i></a>
+                    <a class="social-btn sb-instagram sb-outline sb-sm mr-2 mb-2" href="#"><i class="czi-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card text-center border-0 box-shadow">
+                <div class="card-body">
+                    <img class="d-inline-block rounded mb-3" width="96" src="~/Images/Logo/Dim.jpg" alt="Dmitry K" />
+                    <h6 class="pt-1 mb-1">Дмитрий Круглов</h6>
+                    <p class="font-size-sm text-muted">Ведущий разработчик</p>
+                    <ul class="font-size-sm list-unstyled mb-4">
+                        <li class="mb-0"><i class="czi-phone mr-2"></i><span class="nav-link-style">8-908-41-62-902</span></li>
+                        <li class="mb-0"><i class="czi-mail mr-2"></i><span class="nav-link-style">dim.kruglov@sunglade.ru</span></li>
+                    </ul>
+                    <a class="social-btn sb-vk sb-outline sb-sm mr-2 mb-2" href="#"><i class="czi-vk"></i></a>
+                    <a class="social-btn sb-odnoklassniki sb-outline sb-sm mr-2 mb-2" href="#"><i class="czi-odnoklassniki"></i></a>
+                    <a class="social-btn sb-instagram sb-outline sb-sm mr-2 mb-2" href="#"><i class="czi-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+    {
+<script>
+$(document).ready(function () {
+
+    //ПЕРЕХОД К КАТАЛОГУ
+
+    $("ul li a.widget-list-link").click(function () {
+        document.location.replace('/Home/Catalog?Filter=Type&id=' + $(this).attr("data-prodtype-id") + "&sid=" + $(this).attr("data-subtype-id") + "&tid=" + $(this).attr("data-thsubtype-id"));
+    });
+
+    $("#input_text").keydown(function (e) {
+        if (e.keyCode === 13) {
+            document.location.replace('/Home/Catalog?Filter=Text&name=' + $("#input_text").val() + "&nid=" + $("select#input_type option:selected").attr("prodtype-id"));
+        };
+    });
+
+    //РАБОТА С КОРЗИНОЙ
+
+    //Показ корзины
+
+    updateBasket();
+    updateHeader();
+
+    //Удаление из корзины
+
+    $(document).on('click', 'button.close', function () {
+        deleteFromBasket($(this).attr('id'));
+        updateHeader();
+    });
+
+    //Редактирование корзины
+
+    $(document).on('click', 'button.js-minus', function () {
+        editBasket($(this).attr('id'), "minus");
+        updateHeader();
+    });
+
+    $(document).on('click', 'button.js-plus', function () {
+        editBasket($(this).attr('id'), "plus");
+        updateHeader();
+    });
+
+    //Заказ
+
+    $(document).on('click', 'button.js-order', function () {
+        getNewBasketOnServer();
+    });
+
+});
+</script>
+}

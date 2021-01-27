@@ -1,0 +1,239 @@
+﻿@model IEnumerable<TestFlight.Models.Product>
+@{
+    ViewBag.Title = "Продукт";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<nav class="mb-4" aria-label="breadcrumb">
+    <ol class="breadcrumb flex-lg-nowrap">
+        <li class="breadcrumb-item"><a class="text-nowrap" href="/Home/Index"><i class="czi-home"></i>Домашняя страница</a></li>
+        <li class="breadcrumb-item text-nowrap">
+            <a href="/Home/Catalog">Каталог продуктов</a>
+        </li>
+        <li class="breadcrumb-item text-nowrap active" aria-current="page">Страница продукта</li>
+    </ol>
+</nav>
+<section class="row no-gutters mx-n2 pb-5 mb-xl-3">
+    <div class="col-xl-7 px-2 mb-3">
+        <div class="h-100 bg-light rounded-lg p-4">
+            <div class="cz-product-gallery">
+                <div class="cz-preview order-sm-2">
+                    @{
+                        var i = 0;
+                        var IdArray = new[] { "first", "second", "third", "fourth", "fifth" };
+                    }
+                    @foreach (var image in Model.ToList()[0].Photo.Split('#'))
+                    {
+                        if (i == 0)
+                        {
+                            <div class="cz-preview-item active" id="@IdArray[i]"><img src="/Images/Products/@image" alt="Product image"></div>
+                        }
+                        else
+                        {
+                            <div class="cz-preview-item" id="@IdArray[i]"><img src="/Images/Products/@image" alt="Product image"></div>
+                        }
+                        i++;
+                    }
+                </div>
+                <div class="cz-thumblist order-sm-1">
+                    @{
+                        var j = 0;
+                    }
+                    @foreach (var imageSm in Model.ToList()[0].Photo.Split('#'))
+                    {
+                        if (j == 0)
+                        {
+                            <a class="cz-thumblist-item active" href="#@IdArray[j]"><img src="/Images/Products/@imageSm" alt="Product thumb"></a>
+                        }
+                        else
+                        {
+                            <a class="cz-thumblist-item" href="#@IdArray[j]"><img src="/Images/Products/@imageSm" alt="Product thumb"></a>
+                        }
+                        j++;
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-5 px-2 mb-3">
+        <div class="h-100 bg-light rounded-lg py-5 px-4 px-sm-5">
+            <a class="product-meta d-block font-size-md pb-2" href="/Home/Catalog?Filter=Type&id=@Model.ToList()[0].ProdTypeId.ToString()&sid=all&tid=all">@Model.ToList()[0].ProdTypeName</a>
+            <h1 class="h3">@Model.ToList()[0].Name</h1>
+            <div class="h4 font-weight-normal text-accent">@Model.ToList()[0].Price<small>.00</small><span class="text-dark"> рублей / @Model.ToList()[0].PriceFor</span></div>
+            <div class="form-group d-flex flex-wrap align-items-center pt-4 pb-2">
+                <select class="custom-select mr-3 mb-3" id="quant_pointer" style="width: 5rem;">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <button class="btn js-put-main btn-primary btn-shadow mr-3 mb-3" id="@Model.ToList()[0].Id" type="submit"><i class="czi-cart font-size-lg mr-2"></i>Добавить в корзину</button>
+                <button class="btn btn-icon btn-wishlist btn-secondary mb-3" id="@Model.ToList()[0].Id" type="submit" data-toggle="tooltip" title="" data-original-title="Добавить в избранное"><i class="czi-heart font-size-lg"></i></button>
+            </div>
+            <h4>Описание продукта</h4>
+            <ul class="list-unstyled font-size-sm pt-2 mb-0">
+                @foreach (var desc in Model.ToList()[0].Description.Split('#'))
+                {
+                    <li style="font-size:large"><i class="czi-check-circle text-success mr-2"></i>@desc</li>
+                }
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Дополнительные тоары -->
+
+<section class="pb-5 mb-2 mb-xl-4">
+    <h2 class="h3 pb-2 mb-grid-gutter text-center">Вам также может понравится</h2>
+    <div class="cz-carousel cz-controls-static cz-controls-outside cz-dots-enabled">
+        <div class="cz-carousel-inner" data-carousel-options="{&quot;items&quot;: 2, &quot;gutter&quot;: 16, &quot;controls&quot;: true, &quot;autoHeight&quot;: true, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1}, &quot;480&quot;:{&quot;items&quot;:2}, &quot;720&quot;:{&quot;items&quot;:3}, &quot;991&quot;:{&quot;items&quot;:2}, &quot;1140&quot;:{&quot;items&quot;:3}, &quot;1300&quot;:{&quot;items&quot;:4}, &quot;1500&quot;:{&quot;items&quot;:5}}}">
+
+            @for (var y = 0; y < 11; y++)
+            {
+                <div>
+                    <div class="card product-card card-static pb-3">
+                        @if (Model.ToList()[y].DiscountProd == true) {<span class="badge badge-danger badge-shadow">Sale</span>}
+                        else if (Model.ToList()[y].CrDate - DateTime.Now < new TimeSpan(50)) {<span class="badge badge-info badge-shadow">New</span>}
+                        <button class="btn-wishlist btn-sm" type="button" id="@Model.ToList()[y].Id" data-toggle="tooltip" data-placement="left" title="В избранное"><i class="czi-heart"></i></button>
+                        <a class="card-img-top d-block overflow-hidden" href="/Home/Product/@Model.ToList()[y].Id">
+                            <img src="~/Images/Products/@Model.ToList()[y].Photo.Split('#')[0]" alt="Product">
+                        </a>
+                        <div class="card-body py-2">
+                            <a class="product-meta d-block font-size-xs" href="/Home/Catalog?Filter=Type&id=@Model.ToList()[y].ProdTypeId.ToString()&sid=all&tid=all">@Model.ToList()[y].ProdTypeName</a>
+                            <h3 class="product-title font-size-base" style="margin-bottom:0.3rem"><a href="/Home/Product/@Model.ToList()[y].Id">@Model.ToList()[y].Name</a></h3>
+                            <div class="product-price">
+                                <span class="text-accent">₽ @Model.ToList()[y].Price<small>.00</small></span>
+                                <span class="text-body">/ @Model.ToList()[y].PriceFor</span>
+                            </div>
+                        </div>
+                        <div class="product-floating-btn">
+                            <button class="btn js-put btn-primary btn-shadow btn-sm" id="@Model.ToList()[y].Id" type="button">+<i class="czi-cart font-size-base ml-1"></i></button>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</section>
+
+<!-- Добавлено в корзину -->
+
+<div class="toast-container toast-bottom-center">
+    <div class="toast ba-add mb-3" data-delay="2000" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white">
+            <i class="czi-check-circle mr-2"></i>
+            <h6 class="font-size-sm text-white mb-0 mr-auto">Добавлено в Вашу корзину!</h6>
+            <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="toast-body">Данный продукт был добавлен в Вашу корзину.</div>
+    </div>
+</div>
+
+<!-- Добавлено в избранное -->
+
+<div class="toast-container toast-bottom-center">
+    <div class="toast wl-add mb-3" data-delay="2000" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-info text-white">
+            <i class="czi-bell mr-2"></i>
+            <h6 class="font-size-sm text-white mb-0 mr-auto">Избранное</h6>
+            <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="toast-body">Продукт добавлен в список избранного</div>
+    </div>
+</div>
+
+<!-- Удалено из избранного -->
+
+<div class="toast-container toast-bottom-center">
+    <div class="toast wl-remowe mb-3" data-delay="2000" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-dark text-white">
+            <i class="czi-close-circle mr-2"></i>
+            <h6 class="font-size-sm text-white mb-0 mr-auto">Избранное</h6>
+            <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="toast-body">Продукт удален из списка избранного</div>
+    </div>
+</div>
+
+
+@section scripts
+    {
+    <script>
+        $(document).ready(function () {
+
+            //Выделение избранного
+
+            colorWishlist();
+
+            //ПЕРЕХОД К КАТАЛОГУ
+
+            $("ul li a.widget-list-link").click(function () {
+                document.location.replace('/Home/Catalog?Filter=Type&id=' + $(this).attr("data-prodtype-id") + "&sid=" + $(this).attr("data-subtype-id") + "&tid=" + $(this).attr("data-thsubtype-id"));
+            });
+
+            $("#input_text").keydown(function (e) {
+                if (e.keyCode === 13) {
+                    document.location.replace('/Home/Catalog?Filter=Text&name=' + $("#input_text").val() + "&nid=" + $("select#input_type option:selected").attr("prodtype-id"));
+                };
+            });
+
+            // РАБОТА С КОРЗИНОЙ
+
+            updateBasket();
+            updateHeader();
+
+            //Добавление в корзину
+
+            $(document).on('click', 'button.js-put-main', function () {
+                $('.ba-add').toast('show');
+                let quant = document.getElementById('quant_pointer').value;
+                putIntoBasket($(this).attr("id"), quant);
+                updateBasket();
+                updateHeader();
+            });
+
+            $(document).on('click', 'button.js-put', function () {
+                $('.ba-add').toast('show');
+                putIntoBasket($(this).attr("id"), 1);
+                updateBasket();
+                updateHeader();
+            });
+
+            //Удаление из корзины
+
+            $(document).on('click', 'button.close', function () {
+                deleteFromBasket($(this).attr('id'));
+                updateHeader();
+            });
+
+            //Редактирование корзины
+
+            $(document).on('click', 'button.js-minus', function () {
+                editBasket($(this).attr('id'), "minus");
+                updateHeader();
+            });
+
+            $(document).on('click', 'button.js-plus', function () {
+                editBasket($(this).attr('id'), "plus");
+                updateHeader();
+            });
+
+            //Заказ
+
+            $(document).on('click', 'button.js-order', function () {
+                getNewBasketOnServer();
+            });
+
+            //РАБОТА С ИЗБРАННЫМ
+
+            $(document).on('click', 'button.btn-wishlist', function () {
+                $('[data-toggle="tooltip"]').tooltip('dispose');
+                editWishList($(this).attr('id'));
+                colorWishlist();
+                $('[data-toggle="tooltip"]').tooltip('enable');
+            });
+
+        });
+    </script>
+}

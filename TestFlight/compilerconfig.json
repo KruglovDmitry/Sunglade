@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "Scripts/cartzilla/myscript.es5.js",
+    "inputFile": "Views/Home/Index.cshtml"
+  },
+  {
+    "outputFile": "Scripts/cartzilla/myscript.es5.js",
+    "inputFile": "Scripts/cartzilla/myscript.js"
+  }
+]

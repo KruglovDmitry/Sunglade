@@ -1,0 +1,89 @@
+﻿@model TestFlight.Models.TypeConteiner
+@using TestFlight.Models
+
+<header class="bg-light box-shadow-sm fixed-top" style="">
+    <div class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+
+            <!-- Лого -->
+
+            <a class="navbar-brand d-none d-sm-block mr-3 mr-xl-4 flex-shrink-0" href="/Home/Index" style="min-width: 3rem;">
+                <img width="45" src="~/Images/Logo/logo_1.png" alt="EcoMarket" />
+            </a>
+
+            <!-- Поиск -->
+
+            <div class="input-group-overlay d-none d-lg-block mx-4">
+                <div class="input-group-prepend-overlay">
+                    <span class="input-group-text">
+                        <i class="czi-search"></i>
+                    </span>
+                </div>
+                <input class="form-control prepended-form-control appended-form-control" type="text" id="input_text" placeholder="Поиск по продуктам" />
+                <div class="input-group-append-overlay">
+                    <select class="custom-select" id="input_type">
+                        <option prodtype-id="all">Все категории</option>
+                        @foreach (ProdType MainType in Model.Main)
+                        {
+                            <option prodtype-id="@MainType.Id">@MainType.RusName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <!-- Панель навигации -->
+
+            <div class="navbar-toolbar d-flex flex-shrink-0 align-items-center ml-xl-2">
+                <a class="navbar-toggler" href="#sideNav" data-toggle="sidebar">
+                    <span class="navbar-toggler-icon"></span>
+                </a>
+                <a class="navbar-tool d-flex d-lg-none" href="#searchBox" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="searchBox">
+                    <span class="navbar-tool-tooltip">Поиск</span>
+                    <div class="navbar-tool-icon-box">
+                        <i class="navbar-tool-icon czi-search"></i>
+                    </div>
+                </a>
+
+                <a class="navbar-tool d-none d-lg-flex" href="/Home/Catalog?Filter=WishList">
+                    <span class="navbar-tool-tooltip">Избранное</span>
+                    <div class="navbar-tool-icon-box">
+                        <i class="navbar-tool-icon czi-heart"></i>
+                    </div>
+                </a>
+
+                <!-- Регистрация/Вход -->
+
+                @Html.Partial("_LoginPartial")
+
+                <!-- Корзина -->
+
+                <div class="navbar-tool dropdown ml-3" id="basket_init">
+                    <a class="navbar-tool-icon-box bg-secondary dropdown-toggle" href="#">
+                    <span class="navbar-tool-label" id="quantity"></span>
+                    <i class="navbar-tool-icon czi-cart"></i></a>
+                    <a class="navbar-tool-text" href="#">
+                        <small>Моя корзина</small>₽ <span id="total"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" id="basket_content" style="width: 22rem;">
+
+                        <!-- Содержимое корзины -->
+                                          
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <!-- Коллапс поиска -->
+
+    <div class="collapse" id="searchBox">
+        <div class="card pt-2 pb-4 border-0 rounded-0">
+            <div class="container">
+                <div class="input-group-overlay">
+                    <div class="input-group-prepend-overlay"><span class="input-group-text"><i class="czi-search"></i></span></div>
+                    <input class="form-control prepended-form-control" type="text" placeholder="Поиск по продуктам">
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

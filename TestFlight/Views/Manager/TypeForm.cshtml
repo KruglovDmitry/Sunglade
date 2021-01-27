@@ -1,0 +1,76 @@
+﻿@model TestFlight.Models.TypeConteiner
+@{
+    ViewBag.Title = "TypeForm";
+    Layout = "~/Views/Shared/_LayoutService.cshtml";
+}
+
+    <div class="container">
+        <h4 style="padding-bottom:10px;">Добавление типа</h4>
+        @using (Html.BeginForm("SaveType", "Manager", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.ValidationSummary();
+            <table class="table">
+                @if (Model.Main.ToList().Count > 0)
+                {
+                <tr class="form-group">
+                    <td>@Html.LabelFor(t => t.Main[0].Id)</td>
+                    <td>@Html.TextBoxFor(t => t.Main[0].Id, new { @disabled = "disabled", @class = "form-control" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(t => t.Main[0].Id)</td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(t => t.Main[0].RusName)</td>
+                    <td>@Html.TextBoxFor(t => t.Main[0].RusName, new { @class = "form-control" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(t => t.Main[0].RusName)</td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(t => t.Main[0].EngName)</td>
+                    <td>@Html.TextBoxFor(t => t.Main[0].EngName, new { @class = "form-control" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(t => t.Main[0].EngName)</td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(t => t.Main[0].Icon)</td>
+                    <td>@Html.TextBoxFor(t => t.Main[0].Icon, new { @class = "form-control" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(t => t.Main[0].Icon)</td>
+                </tr>
+                }
+                @if (Model.SubList.ToList().Count > 0)
+                { 
+                <tr class="form-group">
+                    <td>@Html.LabelFor(t => t.SubList[0].Id)</td>
+                    <td>@Html.TextBoxFor(t => t.SubList[0].Id, new { @disabled = "disabled", @class = "form-control" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(t => t.SubList[0].Id)</td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(t => t.SubList[0].ProdTypeId)</td>
+                    <td>@Html.TextBoxFor(t => t.SubList[0].ProdTypeId, new { @class = "form-control" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(t => t.SubList[0].ProdTypeId)</td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(t => t.SubList[0].SubTypeName)</td>
+                    <td>@Html.TextBoxFor(t => t.SubList[0].SubTypeName, new { @class = "form-control" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(t => t.SubList[0].SubTypeName)</td>
+                </tr>
+                }
+                @if (Model.ThList.ToList().Count > 0)
+                {
+                <tr class="form-group">
+                    <td>@Html.LabelFor(t => t.ThList[0].Id)</td>
+                    <td>@Html.TextBoxFor(t => t.ThList[0].Id, new {  @disabled = "disabled", @class = "form-control" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(t => t.ThList[0].Id)</td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(t => t.ThList[0].SubTypeId)</td>
+                    <td>@Html.TextBoxFor(t => t.ThList[0].SubTypeId, new { @class = "form-control" })</td>
+                    <td style="color:#ff6a00">@Html.ValidationMessageFor(t => t.ThList[0].SubTypeId)</td>
+                </tr>
+                <tr class="form-group">
+                    <td>@Html.LabelFor(t => t.ThList[0].SubTypeName)</td>
+                    <td>@Html.TextBoxFor(t => t.ThList[0].SubTypeName, new { @class = "form-control" })</td>
+                </tr>
+                }
+            </table>
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        }
+        @if (Model.Main.ToList().Count > 0) {<div class="container py-3"><img src="~/Images/Logo/Icons.jpg" style="border:thick"></div>}
+    </div>

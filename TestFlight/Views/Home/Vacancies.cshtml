@@ -1,0 +1,94 @@
+﻿@model IEnumerable<TestFlight.Models.Vacancy>
+@{
+    ViewBag.Title = "Вакансии";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Вакансии -->
+
+<div class="container py-3">
+    <h5>Хотите присоединится к нашей команде</h5>
+    @if (Model.Count() > 0)
+    {
+        <div class="table-responsive table-sm">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Вакансия</th>
+                        <th>Оплата</th>
+                        <th>График</th>
+                        <th>Требования</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var vacancy in Model)
+                    {
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>@vacancy.Title</td>
+                            <td>от @vacancy.Salary рублей</td>
+                            <td>@vacancy.Shedule</td>
+                            <td>@vacancy.Requirements</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {<div><span class="text-muted"> Извините, но в данный момент открытых вакансий нет </span></div>}
+</div>
+
+@section scripts
+    {
+<script>
+$(document).ready(function () {
+
+    //ПЕРЕХОД К КАТАЛОГУ
+
+    $("ul li a.widget-list-link").click(function () {
+        document.location.replace('/Home/Catalog?Filter=Type&id=' + $(this).attr("data-prodtype-id") + "&sid=" + $(this).attr("data-subtype-id") + "&tid=" + $(this).attr("data-thsubtype-id"));
+    });
+
+    $("#input_text").keydown(function (e) {
+        if (e.keyCode === 13) {
+            document.location.replace('/Home/Catalog?Filter=Text&name=' + $("#input_text").val() + "&nid=" + $("select#input_type option:selected").attr("prodtype-id"));
+        };
+    });
+
+    //РАБОТА С КОРЗИНОЙ
+
+    //Показ корзины
+
+    updateBasket();
+    updateHeader();
+
+    //Удаление из корзины
+
+    $(document).on('click', 'button.close', function () {
+        deleteFromBasket($(this).attr('id'));
+        updateHeader();
+    });
+
+    //Редактирование корзины
+
+    $(document).on('click', 'button.js-minus', function () {
+        editBasket($(this).attr('id'), "minus");
+        updateHeader();
+    });
+
+    $(document).on('click', 'button.js-plus', function () {
+        editBasket($(this).attr('id'), "plus");
+        updateHeader();
+    });
+
+    //Заказ
+
+    $(document).on('click', 'button.js-order', function () {
+        getNewBasketOnServer();
+    });
+
+});
+</script>
+}

@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Int32> 
+@{
+    ViewBag.Title = "Main";
+    Layout = "~/Views/Shared/_LayoutService.cshtml";
+}
+    <div class="container-fluid" style="margin-right:5%; margin-left:5%">
+        <h4 style="padding-bottom:10px;"> Главная менеджер </h4>
+        <table class="table table-bordered" style="width:auto">
+            <tr>
+                <td>Новых пользователей сегодня</td>
+                <td>@Model.ToList()[0]</td>
+            </tr>
+            <tr>
+                <td>Корзин сегодня</td>
+                <td>@Model.ToList()[1]</td>
+            </tr>
+            <tr>
+                <td>Заказов сегодня</td>
+                <td>@Model.ToList()[2]</td>
+            </tr>
+            <tr>
+                <td>Средний заказ</td>
+                <td>@Model.ToList()[3]</td>
+            </tr>
+        </table>
+        <a class="btn btn-primary" href="@Url.Action("ProductList","Manager", null)" role="button">Лист продуктов</a>
+        <a class="btn btn-primary" href="@Url.Action("TypeList","Manager", null)" role="button">Лист типов</a>
+        <a class="btn btn-primary" href="@Url.Action("CustomerList","Manager", null)" role="button">Пользователи</a>
+    </div>

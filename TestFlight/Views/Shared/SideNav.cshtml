@@ -1,0 +1,116 @@
+﻿@model TestFlight.Models.TypeConteiner
+@using TestFlight.Models
+
+<aside class="cz-sidebar cz-sidebar-fixed" id="sideNav" style="padding-top: 5rem;">
+    <button class="close" aria-label="Close" type="button" data-dismiss="sidebar"><span class="d-inline-block font-size-xs font-weight-normal align-middle">Закрыть</span><span class="d-inline-block align-middle ml-2" aria-hidden="true">×</span></button>
+    <div class="cz-sidebar-inner">
+        <ul class="nav nav-tabs nav-justified mt-2 mt-lg-4 mb-0" role="tablist" style="min-height: 3rem;">
+            <li class="nav-item"><div class="nav-link font-weight-medium active" role="tab" href="#categories" data-toggle="tab">Категории</div></li>
+        </ul>
+        <div class="cz-sidebar-body pt-3 pb-0" data-simplebar="init">
+            <div class="simplebar-wrapper" style="margin: -16px -16px 0px -29.92px;">
+                <div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div>
+                <div class="simplebar-mask">
+                    <div class="simplebar-offset" style="right: -17px; bottom: 0px;">
+                        <div class="simplebar-content-wrapper" style="height: 100%; overflow-x: hidden; overflow-y: scroll;">
+                            <div class="simplebar-content" style="padding: 16px 16px 0px 29.92px;">
+                                <div class="tab-content">
+
+                                    <!-- Categories-->
+
+                                    <div class="sidebar-nav tab-pane fade show active" id="categories" role="tabpanel">
+                                        <div class="widget widget-categories">
+                                            <div class="accordion" id="shop-categories">
+
+                                                <!-- Special offers-->
+
+                                                <div class="card border-bottom">
+                                                    <div class="card-header">
+                                                        <h3 class="accordion-heading font-size-base px-grid-gutter">
+                                                            <a class="collapsed py-3" href="/Home/Catalog?Filter=Discounts">
+                                                                <span class="d-flex align-items-center"><i class="czi-discount font-size-lg text-danger mt-n1 mr-2"></i>Специальные предложения</span>
+                                                            </a>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Main Content -->
+
+                                                @foreach (ProdType MainType in Model.Main)
+                                                {
+
+                                                    <div class="card border-bottom">
+                                                        <div class="card-header">
+                                                            <h3 class="accordion-heading font-size-base px-grid-gutter">
+                                                                <a class="collapsed py-3" role="button" aria-expanded="false" aria-controls=@MainType.EngName href="#@MainType.EngName" data-toggle="collapse">
+                                                                    <span class="d-flex align-items-center"><i class="czi-@MainType.Icon font-size-lg opacity-60 mt-n1 mr-2"></i>@MainType.RusName</span>
+                                                                    <span class="accordion-indicator"></span>
+                                                                </a>
+                                                            </h3>
+                                                        </div>
+                                                        <div class="collapse" id=@MainType.EngName data-parent="#shop-categories">
+                                                            <div class="card-body px-grid-gutter pb-4">
+                                                                <div class="widget widget-links">
+                                                                    <ul class="widget-list">
+                                                                        <li class="widget-list-item"><a class="widget-list-link" data-prodtype-id="@MainType.Id" data-subtype-id="all" data-thsubtype-id="all" href="#">Показать все</a></li>
+                                                                        @foreach (SubType SubType in Model.SubList)
+                                                                        {
+                                                                            if (MainType.Id == SubType.ProdTypeId)
+                                                                            {
+                                                                                <li class="widget-list-item">
+                                                                                    <a class="widget-list-link" data-prodtype-id="@MainType.Id" data-subtype-id="@SubType.Id" data-thsubtype-id="all" href="#">@SubType.SubTypeName</a>
+                                                                                    <ul class="widget-list pt-1">
+                                                                                        @foreach (ThSubType ThType in Model.ThList)
+                                                                                        {
+                                                                                            if (SubType.Id == ThType.SubTypeId)
+                                                                                            {
+                                                                                                <li class="widget-list-item"><a class="widget-list-link" data-prodtype-id="@MainType.Id" data-subtype-id="@SubType.Id" data-thsubtype-id="@ThType.Id" href="#">@ThType.SubTypeName</a></li>
+                                                                                            }
+                                                                                        }
+                                                                                    </ul>
+                                                                                </li>
+                                                                            }
+                                                                        }
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="simplebar-placeholder" style="width: auto; height: 733px;"></div>
+                </div>
+                <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="display: none; transform: translate3d(0px, 0px, 0px);"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 348px; display: block; transform: translate3d(0px, 0px, 0px);"></div></div>
+            </div>
+        </div>
+
+        <div class="px-grid-gutter pt-5 pb-4 mb-2">
+            <div class="d-flex mb-3">
+                <i class="czi-support h4 mb-0 font-weight-normal text-primary mt-1 mr-1"></i>
+                <div class="pl-2">
+                    <div class="text-muted font-size-sm">Поддержка</div><a class="nav-link-style font-size-md" href="tel:+100331697720">+1 (00) 33 169 7720</a>
+                </div>
+            </div>
+            <div class="d-flex mb-3">
+                <i class="czi-mail h5 mb-0 font-weight-normal text-primary mt-1 mr-1"></i>
+                <div class="pl-2">
+                    <div class="text-muted font-size-sm">Почта</div><a class="nav-link-style font-size-md" href="mailto:customer@example.com">customer@example.com</a>
+                </div>
+            </div>
+            <h6 class="pt-2 pb-1">Мы в социальных сетях</h6>
+            <a class="social-btn sb-outline sb-odnoklassniki mr-2 mb-2" href="#"><i class="czi-odnoklassniki"></i></a>
+            <a class="social-btn sb-outline sb-vk mr-2 mb-2" href="#"><i class="czi-vk"></i></a>
+            <a class="social-btn sb-outline sb-instagram mr-2 mb-2" href="#"><i class="czi-instagram"></i></a>
+            <a class="social-btn sb-outline sb-youtube mr-2 mb-2" href="#"><i class="czi-youtube"></i></a>
+        </div>
+
+    </div>
+</aside>

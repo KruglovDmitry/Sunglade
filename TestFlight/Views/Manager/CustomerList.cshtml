@@ -1,0 +1,62 @@
+﻿@model IEnumerable<TestFlight.Models.Customer>
+@{
+    ViewBag.Title = "CustomerList";
+    Layout = "~/Views/Shared/_LayoutService.cshtml";
+}
+
+    <div class="container-fluid" style="margin-right:5%; margin-left:5%">
+        <h4 style="padding-bottom:10px;"> Лист заказчиков </h4>
+        <table class="table table-responsive-sm" id="Customers">
+            <thead>
+                <tr>
+                    <th><h6>ID</h6></th>
+                    <th><h6>UserName</h6></th>
+                    <th><h6>Имя</h6></th>
+                    <th><h6>Фамилия</h6></th>
+                    <th><h6>Почта</h6></th>
+                    <th><h6>Фото адрес</h6></th>
+                    <th><h6>Фото</h6></th>
+                    <th><h6>Адрес -Улица</h6></th>
+                    <th><h6>Адрес - Дом</h6></th>
+                    <th><h6>Адрес - Квартира</h6></th>
+                    <th><h6>Телефон</h6></th>
+                    <th><h6>Роль</h6></th>
+                    <th><h6>Добавить оператора</h6></th>
+                    <th><h6>Удалить</h6></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var Customer in Model.ToList())
+                {
+
+                    <tr>
+                        <td>@Customer.Id</td>
+                        <td>@Customer.UserName</td>
+                        <td>@Customer.Name</td>
+                        <td>@Customer.SurName</td>
+                        <td>@Customer.Email</td>
+                        <td>@Customer.Photo</td>
+                        <td><img width="20" src="~/Images/Customers/@Customer.Photo"></td>
+                        <td>@Customer.Street</td>
+                        <td>@Customer.HomeNr</td>
+                        <td>@Customer.FlatNr</td>
+                        <td>@Customer.Phone</td>
+                        <td>@Customer.Role</td>
+                        @if (Customer.Role != "Operator") {<td><a class="btn btn-outline-primary" href="@Url.Action("AddOperator","Manager", new { id = Customer.Id }, null)" role="button">Добавить оператора</a></td>} else {<td> </td>}
+                        <td><a class="btn btn-outline-danger" href="@Url.Action("DeleteCustomer","Manager", new { id = Customer.Id }, null)" role="button">Удалить</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a class="btn btn-primary" href="@Url.Action("Main","Manager", null)" role="button">Назад</a>
+    </div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#Products").DataTable();
+
+        });
+    </script>
+}
+

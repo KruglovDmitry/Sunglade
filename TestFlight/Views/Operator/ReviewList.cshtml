@@ -1,0 +1,54 @@
+﻿@using TestFlight.Models
+@model IEnumerable<Review>
+@{
+    ViewBag.Title = "ReviewList";
+    Layout = "~/Views/Shared/_LayoutService.cshtml";
+}
+
+<div class="container-fluid" style="margin-right:5%; margin-left:5%">
+    <h4 style="padding-bottom:10px;"> Отзывы </h4>
+    <table class="table table-responsive-sm" id="Review">
+        <thead>
+            <tr>
+                <th><h6>ID</h6></th>
+                <th><h6>Имя заказчика</h6></th>
+                <th><h6>Фамилия заказчика</h6></th>
+                <th><h6>Фото заказчика</h6></th>
+                <th><h6>Отзыв</h6></th>
+                <th><h6>Оценка</h6></th>
+                <th><h6>Подтвержден</h6></th>
+                <th><h6>Дата</h6></th>
+                <th><h6>Подтвердить</h6></th>
+                <th><h6>Удалить</h6></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Review in Model)
+            {
+            <tr>
+                <td>@Review.Id</td>
+                <td>@Review.CustomerName</td>
+                <td>@Review.CustomerSurName</td>
+                <td><img src="~/Images/Customers/@Review.CustomerPhoto" width="60" /></td>
+                <td>@Review.Body</td>
+                <td>@Review.Score</td>
+                <td>@Review.Valid</td>
+                <td>@Review.Date.ToString("t")</td>
+                @if (Review.Valid != true)
+                {<td><a class="btn btn-outline-info" href="@Url.Action("ConfirmReview", "Operator", new { id = Review.Id }, null)" role="button">Подтвердить</a></td>} else {<td> </td>}
+                <td><a class="btn btn-outline-danger" href="@Url.Action("DeleteReview","Operator", new { id = Review.Id }, null)" role="button">Удалить</a></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    <a class="btn btn-info" href="@Url.Action("Main","Operator", null)" role="button">Назад</a>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#Review").DataTable();
+
+        });
+    </script>
+}   
